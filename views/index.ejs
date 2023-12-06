@@ -11,20 +11,25 @@
     <h1>Proxy Checker</h1>
     
     <form action="/" method="post">
-        <label for="socksDetails">Socks Details (Hostname:Port):</label>
-        <input type="text" id="socksDetails" name="socksDetails" required><br>
+        <label for="proxyList">Proxy List (Hostname:Port per line):</label>
+        <textarea id="proxyList" name="proxyList" rows="4" required></textarea><br>
 
         <label for="socksUsername">Socks Username:</label>
-        <input type="text" id="socksUsername" name="socksUsername" required><br>
+        <input type="text" id="socksUsername" value="G1emUVl36Ed4" name="socksUsername" required><br>
 
         <label for="socksPassword">Socks Password:</label>
-        <input type="password" id="socksPassword" name="socksPassword" required><br>
+        <input type="password" id="socksPassword" value="Pq6PT1LY" name="socksPassword" required><br>
 
-        <button type="submit">Check Proxy</button>
+        <button type="submit">Check Proxies</button>
     </form>
 
-    <% if (result) { %>
-        <p>Result: <%= result %></p>
+    <% if (results) { %>
+        <h2>Results:</h2>
+        <ul>
+            <% results.forEach(result => { %>
+                <li><%= result.proxy.hostname + ':' + result.proxy.port %> - <%= result.result %></li>
+            <% }); %>
+        </ul>
     <% } %>
 </body>
 </html>

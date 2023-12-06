@@ -9,23 +9,31 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.render('index', { result: null });
+    res.render('index', { results: null });
 });
 
 app.post('/', (req, res) => {
-    const { socksDetails, socksUsername, socksPassword } = req.body;
+    const { proxyList, socksUsername, socksPassword } = req.body;
 
-    // Parse socksDetails into hostname and port
-    const [hostname, port] = socksDetails.split(':');
+    // Parse proxyList into an array of proxies
+    const proxies = proxyList.split('\n').map(proxy => {
+        const [hostname, port] = proxy.split(':');
+        return {
+            hostname,
+            port: parseInt(port),
+            username: socksUsername,
+            password: socksPassword,
+        };
+    });
 
     // Set proxy details in checker.js
-    checker.setProxyDetails(hostname, parseInt(port), socksUsername, socksPassword);
+    checker.setProxyDetailsArray(proxies);
 
     // Perform proxy check using checker.js
-    const result = checker.checkProxy();
+    const results = checker.checkProxies();
 
-    // Render the result on the webpage
-    res.render('index', { result });
+    // Render the results on the webpage
+    res.render('index', { results });
 });
 
 const port = 3000;
