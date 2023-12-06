@@ -5,11 +5,23 @@ const bodyParser = require('body-parser');
 const app = express();
 const checker = require('./checker');
 
+// Fungsi untuk mengonversi milidetik ke format waktu (detik dan menit)
+function formatElapsedTime(time) {
+    const seconds = Math.floor(time / 1000);
+    const minutes = Math.floor(seconds / 60);
+
+    if (minutes > 0) {
+        return `${minutes} minute(s)`;
+    } else {
+        return `${seconds} second(s)`;
+    }
+}
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.render('index', { results: null });
+    res.render('index', { results: null, elapsedTime: null, formatElapsedTime });
 });
 
 app.post('/', (req, res) => {
@@ -30,10 +42,13 @@ app.post('/', (req, res) => {
     checker.setProxyDetailsArray(proxies);
 
     // Perform proxy check using checker.js
+    const startTime = new Date();
     const results = checker.checkProxies();
+    const endTime = new Date();
+    const elapsedTime = endTime - startTime;
 
     // Render the results on the webpage
-    res.render('index', { results });
+    res.render('index', { results, elapsedTime, formatElapsedTime });
 });
 
 const port = 3000;

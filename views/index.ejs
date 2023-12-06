@@ -30,6 +30,13 @@
                 <li><%= result.proxy.hostname + ':' + result.proxy.port %> - <%= result.result %></li>
             <% }); %>
         </ul>
+        <% if (elapsedTime) { %>
+            <p>Estimation time: <%= formatElapsedTime(elapsedTime) %></p>
+        <% } %>
     <% } %>
+
+    <script>
+        // Jangan perlu menyalin fungsi formatElapsedTime ke sini karena sudah disertakan di server.
+    </script>
 </body>
 </html>
