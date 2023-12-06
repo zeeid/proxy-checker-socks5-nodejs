@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.render('index', { results: null, elapsedTime: null, formatElapsedTime });
 });
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
     const { proxyList, socksUsername, socksPassword } = req.body;
 
     // Parse proxyList into an array of proxies
@@ -41,9 +41,9 @@ app.post('/', (req, res) => {
     // Set proxy details in checker.js
     checker.setProxyDetailsArray(proxies);
 
-    // Perform proxy check using checker.js
+    // Perform proxy check using checker.js asynchronously
     const startTime = new Date();
-    const results = checker.checkProxies();
+    const results = await checker.checkProxies();
     const endTime = new Date();
     const elapsedTime = endTime - startTime;
 

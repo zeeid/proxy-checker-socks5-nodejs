@@ -26,14 +26,12 @@ function setProxyDetailsArray(proxies) {
     proxyDetailsArray = proxies;
 }
 
-function checkProxies() {
-    const results = [];
-
-    for (const proxy of proxyDetailsArray) {
+function checkProxy(proxy) {
+    return new Promise((resolve, reject) => {
         var http = new chilkat.Http();
         http.SocksVersion = 5;
 
-        // Gunakan detail proxy dari array
+        // Gunakan detail proxy dari parameter
         http.SocksHostname = proxy.hostname;
         http.SocksPort = proxy.port;
 
@@ -45,18 +43,21 @@ function checkProxies() {
             http.SocksPassword = proxy.password;
         }
 
-        var html = http.QuickGetStr("https://api.ipify.org/?format=json");
-        if (http.LastMethodSuccess !== true) {
-            results.push({ proxy: proxy, result: "Proxy is not working." });
-        } else {
-            results.push({ proxy: proxy, result: "Proxy is working fine!" });
+        try {
+            const responseText = http.QuickGetStr("https://api.ipify.org/?format=json");
+            resolve({ proxy: proxy, result: "Proxy is working fine!" });
+        } catch (error) {
+            resolve({ proxy: proxy, result: "Proxy is not working." });
+        } finally {
+            // Tutup koneksi secara eksplisit
+            http.CloseAllConnections();
         }
+    });
+}
 
-        // Tutup koneksi secara eksplisit
-        http.CloseAllConnections();
-    }
-
-    return results;
+async function checkProxies() {
+    const promises = proxyDetailsArray.map(checkProxy);
+    return Promise.all(promises);
 }
 
 module.exports = {
