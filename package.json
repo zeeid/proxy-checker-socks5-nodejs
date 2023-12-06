@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@chilkat/ck-node20-win64": "^9.50.96"
+  }
+}
