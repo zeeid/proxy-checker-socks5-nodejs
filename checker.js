@@ -45,6 +45,8 @@ function checkProxies() {
         } else {
             results.push({ proxy: proxy, result: "Proxy is working fine!" });
         }
+         // Close the connection explicitly
+         http.CloseAllConnections();
     }
 
     return results;
