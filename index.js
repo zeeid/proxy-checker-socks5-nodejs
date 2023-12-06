@@ -1,10 +1,8 @@
 var os = require('os');
 if (os.platform() == 'win32') {  
     if (os.arch() == 'ia32') {
-        console.log("m asukif");
         var chilkat = require('@chilkat/ck-node11-win-ia32');
     } else {
-        console.log("m asuk else");
         var chilkat = require('@chilkat/ck-node20-win64'); 
     }
 } else if (os.platform() == 'linux') {
@@ -56,7 +54,7 @@ function chilkatExample() {
 
     }
 
-    // console.log(html);
+    console.log(html);
     // console.log("----");
     // console.log("Success!");
 
