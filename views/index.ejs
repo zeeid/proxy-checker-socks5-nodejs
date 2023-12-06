@@ -9,6 +9,22 @@
 </head>
 <body>
     <h1>Proxy Checker</h1>
-    <p>Result: <%= result %></p>
+    
+    <form action="/" method="post">
+        <label for="socksDetails">Socks Details (Hostname:Port):</label>
+        <input type="text" id="socksDetails" name="socksDetails" required><br>
+
+        <label for="socksUsername">Socks Username:</label>
+        <input type="text" id="socksUsername" name="socksUsername" required><br>
+
+        <label for="socksPassword">Socks Password:</label>
+        <input type="password" id="socksPassword" name="socksPassword" required><br>
+
+        <button type="submit">Check Proxy</button>
+    </form>
+
+    <% if (result) { %>
+        <p>Result: <%= result %></p>
+    <% } %>
 </body>
 </html>
