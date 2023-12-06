@@ -33,11 +33,17 @@ function checkProxies() {
         var http = new chilkat.Http();
         http.SocksVersion = 5;
 
-        // Use proxy details from the array
+        // Gunakan detail proxy dari array
         http.SocksHostname = proxy.hostname;
         http.SocksPort = proxy.port;
-        http.SocksUsername = proxy.username;
-        http.SocksPassword = proxy.password;
+
+        // Atur username dan password jika ada
+        if (proxy.username) {
+            http.SocksUsername = proxy.username;
+        }
+        if (proxy.password) {
+            http.SocksPassword = proxy.password;
+        }
 
         var html = http.QuickGetStr("https://api.ipify.org/?format=json");
         if (http.LastMethodSuccess !== true) {
@@ -45,7 +51,8 @@ function checkProxies() {
         } else {
             results.push({ proxy: proxy, result: "Proxy is working fine!" });
         }
-        // Close the connection explicitly
+
+        // Tutup koneksi secara eksplisit
         http.CloseAllConnections();
     }
 
